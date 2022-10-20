@@ -97,6 +97,7 @@ def generate_graph(filename="graph.html"):
         if not hasattr(work, "doi_ref"):
             continue
         for doi in work.doi_ref:
+            # if not(doi in all_doi):
             # if not(doi in all_doi and \
             #     hasattr(works[doi_to_id[doi]], "crossref_response") and \
             #     hasattr(works[doi_to_id[work.doi]], "crossref_response")):
@@ -107,20 +108,35 @@ def generate_graph(filename="graph.html"):
             # )
             if not(doi in all_doi and \
                 hasattr(works[doi_to_id[doi]], "title") and \
-                hasattr(works[doi_to_id[work.doi]], "title") and \
-                "gender" in works[doi_to_id[work.doi]].title[0].lower() and \
-                "gender" in works[doi_to_id[doi]].title[0].lower()
+                hasattr(works[doi_to_id[work.doi]], "title") # and \
+                # "gender" in works[doi_to_id[work.doi]].title[0].lower() and \
+                # "gender" in works[doi_to_id[doi]].title[0].lower()
             ):
                 continue
+            title1 = works[doi_to_id[work.doi]].title[0]
+            title2 = works[doi_to_id[doi]].title[0]
             nx_graph.add_edge(
-                works[doi_to_id[work.doi]].title[0], 
-                works[doi_to_id[doi]].title[0], 
+                title1, 
+                title2, 
             )
+            # if "gender" in title1.lower():
+            #     nx_graph.nodes[title1]["color"] = "red"
+            # if "gender" in title2.lower():
+            #     nx_graph.nodes[title2]["color"] = "red"
+
+            # nx_graph.add_edge(
+            #     str(doi_to_id[work.doi]), 
+            #     str(doi_to_id[doi])
+            # )
             # nx_graph.add_edge(
             #     str(works[doi_to_id[work.doi]].publish_year), 
             #     str(works[doi_to_id[doi]].publish_year), 
             # )
-
+    # import matplotlib.pyplot as plt
+    # nx.draw(nx_graph, with_labels=True)
+    # plt.show()
+    # plt.savefig("test.png")
+    
     network = Network("1500px", "2000px", directed=True)
     # network.show_buttons(filter_=['physics'])
     network.set_options("""
@@ -185,7 +201,7 @@ def expand(work_i):
 load_log("log011.joblib")
 # expand(1)
 # log("log011.joblib")
-generate_graph("gender.html")
+generate_graph("6.html")
 # [works[k].publish_year for k in works if hasattr(works[k], "publish_year")]
 # [list(works[k].doi_ref)[0] for k in works if hasattr(works[k], "doi_ref")]
 
